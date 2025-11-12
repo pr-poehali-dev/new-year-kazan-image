@@ -2,101 +2,112 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
 
-interface Event {
-  id: number;
+interface DayProgram {
+  day: number;
   title: string;
-  date: string;
-  time: string;
-  location: string;
-  category: string;
   description: string;
-  price: string;
+  activities: string[];
+  meals: string;
 }
 
-const events: Event[] = [
+const tourProgram: DayProgram[] = [
   {
-    id: 1,
-    title: 'Новогодний концерт в Кремле',
-    date: '31 декабря',
-    time: '20:00',
-    location: 'Казанский Кремль',
-    category: 'Концерт',
-    description: 'Праздничный концерт с участием звезд российской эстрады',
-    price: 'От 2000 ₽'
+    day: 1,
+    title: 'Прибытие и знакомство с городом',
+    description: 'Встреча группы, заселение в отель, обзорная экскурсия',
+    activities: [
+      'Встреча на вокзале/аэропорту',
+      'Размещение в отеле 4*',
+      'Обзорная экскурсия по центру Казани',
+      'Прогулка по улице Баумана',
+      'Ужин в традиционном татарском ресторане'
+    ],
+    meals: 'Ужин'
   },
   {
-    id: 2,
-    title: 'Ледовое шоу "Снежная королева"',
-    date: '1-7 января',
-    time: '18:00',
-    location: 'Татнефть Арена',
-    category: 'Шоу',
-    description: 'Захватывающее ледовое представление для всей семьи',
-    price: 'От 1500 ₽'
+    day: 2,
+    title: 'Казанский Кремль и культурные объекты',
+    description: 'Погружение в историю и культуру столицы Татарстана',
+    activities: [
+      'Экскурсия в Казанский Кремль',
+      'Посещение мечети Кул-Шариф',
+      'Благовещенский собор',
+      'Башня Сююмбике',
+      'Национальный музей РТ',
+      'Вечерняя прогулка по набережной'
+    ],
+    meals: 'Завтрак, Обед'
   },
   {
-    id: 3,
-    title: 'Новогодняя ярмарка',
-    date: '20 декабря - 8 января',
-    time: '10:00 - 22:00',
-    location: 'Площадь Тысячелетия',
-    category: 'Ярмарка',
-    description: 'Традиционная рождественская ярмарка с угощениями и подарками',
-    price: 'Бесплатно'
+    day: 3,
+    title: 'Новогоднее волшебство',
+    description: 'Праздничная программа и новогодние мероприятия',
+    activities: [
+      'Посещение Новогодней ярмарки',
+      'Мастер-класс по лепке татарских пирогов',
+      'Свободное время для шопинга',
+      'Новогодний концерт',
+      'Фейерверк на набережной',
+      'Праздничный банкет'
+    ],
+    meals: 'Завтрак, Праздничный ужин'
   },
   {
-    id: 4,
-    title: 'Новогодний бал в Дворце',
-    date: '30 декабря',
-    time: '19:00',
-    location: 'Дворец спорта',
-    category: 'Бал',
-    description: 'Торжественный новогодний бал с живой музыкой',
-    price: 'От 3000 ₽'
-  },
-  {
-    id: 5,
-    title: 'Фейерверк на набережной',
-    date: '31 декабря',
-    time: '00:00',
-    location: 'Кремлевская набережная',
-    category: 'Салют',
-    description: 'Грандиозное пиротехническое шоу встречи Нового года',
-    price: 'Бесплатно'
-  },
-  {
-    id: 6,
-    title: 'Рождественская месса',
-    date: '7 января',
-    time: '10:00',
-    location: 'Храм Всех Святых',
-    category: 'Богослужение',
-    description: 'Праздничная рождественская служба',
-    price: 'Бесплатно'
+    day: 4,
+    title: 'Свияжск и отъезд',
+    description: 'Поездка на остров-град и завершение тура',
+    activities: [
+      'Выезд на остров Свияжск',
+      'Экскурсия по монастырю',
+      'Обед с видом на Волгу',
+      'Возвращение в Казань',
+      'Трансфер на вокзал/аэропорт'
+    ],
+    meals: 'Завтрак, Обед'
   }
 ];
 
-const locations = [
-  { name: 'Казанский Кремль', address: 'ул. Шейнкмана, Кремль' },
-  { name: 'Татнефть Арена', address: 'ул. Спортивная, 1' },
-  { name: 'Площадь Тысячелетия', address: 'Площадь Тысячелетия' },
-  { name: 'Кремлевская набережная', address: 'Кремлевская набережная' }
-];
+const tourDetails = {
+  duration: '4 дня / 3 ночи',
+  dates: '29 декабря - 1 января',
+  groupSize: 'до 20 человек',
+  basePrice: 24900,
+  included: [
+    'Проживание в отеле 4* (3 ночи)',
+    'Питание по программе',
+    'Все экскурсии с гидом',
+    'Трансферы по программе',
+    'Входные билеты в музеи',
+    'Новогодний банкет',
+    'Страхование'
+  ],
+  notIncluded: [
+    'Билеты до Казани и обратно',
+    'Дополнительные экскурсии',
+    'Личные расходы'
+  ]
+};
 
 export default function Index() {
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const [activeTab, setActiveTab] = useState('events');
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    people: '1'
+  });
 
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev =>
-      prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id]
-    );
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
   };
 
-  const favoriteEvents = events.filter(event => favorites.includes(event.id));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary/5 to-background">
@@ -118,233 +129,255 @@ export default function Index() {
       </div>
 
       <div className="relative">
-        <div className="relative h-[60vh] overflow-hidden">
+        <div className="relative h-[70vh] overflow-hidden">
           <img
             src="https://cdn.poehali.dev/projects/a06f1f82-d6e0-4a24-8fc0-fea5c782be93/files/9bf5e6b4-8972-4565-bcf5-22576fb51790.jpg"
             alt="Новогодняя Казань"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/50 to-transparent" />
           
           <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-            <div className="container mx-auto">
+            <div className="container mx-auto max-w-6xl">
               <div className="flex items-center gap-3 mb-4 animate-twinkle">
                 <Icon name="Sparkles" size={32} className="text-secondary" />
+                <Icon name="Plane" size={28} className="text-secondary" />
                 <Icon name="Sparkles" size={24} className="text-secondary" />
               </div>
               <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-fade-in" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                Новый Год в Казани
+                Новогодний тур в Казань
               </h1>
-              <p className="text-xl md:text-2xl text-white/90 max-w-2xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                Афиша праздничных мероприятий и событий
+              <p className="text-xl md:text-2xl text-white/90 max-w-2xl mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                Встретьте Новый год в столице Татарстана
               </p>
+              <div className="flex flex-wrap gap-4 text-lg">
+                <Badge variant="secondary" className="px-4 py-2 text-base">
+                  <Icon name="Calendar" size={18} className="mr-2" />
+                  {tourDetails.duration}
+                </Badge>
+                <Badge variant="secondary" className="px-4 py-2 text-base">
+                  <Icon name="Users" size={18} className="mr-2" />
+                  {tourDetails.groupSize}
+                </Badge>
+                <Badge variant="secondary" className="px-4 py-2 text-base">
+                  <Icon name="Tag" size={18} className="mr-2" />
+                  от {tourDetails.basePrice.toLocaleString()} ₽
+                </Badge>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-12">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 mb-8">
-              <TabsTrigger value="events" className="flex items-center gap-2">
-                <Icon name="Calendar" size={18} />
-                События
-              </TabsTrigger>
-              <TabsTrigger value="favorites" className="flex items-center gap-2">
-                <Icon name="Heart" size={18} />
-                Избранное
-                {favorites.length > 0 && (
-                  <Badge variant="secondary" className="ml-1">{favorites.length}</Badge>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="places" className="flex items-center gap-2">
-                <Icon name="MapPin" size={18} />
-                Места
-              </TabsTrigger>
-              <TabsTrigger value="contacts" className="flex items-center gap-2">
-                <Icon name="Phone" size={18} />
-                Контакты
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="events" className="animate-fade-in">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {events.map((event) => (
-                  <Card key={event.id} className="hover:shadow-lg transition-shadow overflow-hidden group">
-                    <CardHeader className="relative">
-                      <div className="flex justify-between items-start">
-                        <Badge className="mb-2">{event.category}</Badge>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => toggleFavorite(event.id)}
-                          className="group-hover:scale-110 transition-transform"
-                        >
-                          <Icon
-                            name="Heart"
-                            size={20}
-                            className={favorites.includes(event.id) ? 'fill-red-500 text-red-500' : ''}
-                          />
-                        </Button>
-                      </div>
-                      <CardTitle className="text-xl">{event.title}</CardTitle>
-                      <CardDescription className="flex items-center gap-2 mt-2">
-                        <Icon name="Calendar" size={16} />
-                        {event.date}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                          <Icon name="Clock" size={16} />
-                          {event.time}
-                        </div>
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                          <Icon name="MapPin" size={16} />
-                          {event.location}
-                        </div>
-                        <p className="text-muted-foreground mt-3">{event.description}</p>
-                        <div className="flex items-center justify-between pt-4 border-t">
-                          <span className="font-semibold text-secondary">{event.price}</span>
-                          <Button size="sm" className="gap-2">
-                            Подробнее
-                            <Icon name="ArrowRight" size={16} />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="favorites" className="animate-fade-in">
-              {favoriteEvents.length === 0 ? (
-                <Card className="p-12 text-center">
-                  <Icon name="Heart" size={48} className="mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-xl font-semibold mb-2">Избранное пусто</h3>
-                  <p className="text-muted-foreground">
-                    Добавьте интересные события, нажав на ❤️
-                  </p>
-                </Card>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {favoriteEvents.map((event) => (
-                    <Card key={event.id} className="hover:shadow-lg transition-shadow overflow-hidden">
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <Badge className="mb-2">{event.category}</Badge>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => toggleFavorite(event.id)}
-                          >
-                            <Icon name="Heart" size={20} className="fill-red-500 text-red-500" />
-                          </Button>
-                        </div>
-                        <CardTitle className="text-xl">{event.title}</CardTitle>
-                        <CardDescription className="flex items-center gap-2 mt-2">
-                          <Icon name="Calendar" size={16} />
-                          {event.date}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <Icon name="Clock" size={16} />
-                            {event.time}
-                          </div>
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <Icon name="MapPin" size={16} />
-                            {event.location}
-                          </div>
-                          <p className="text-muted-foreground mt-3">{event.description}</p>
-                          <div className="flex items-center justify-between pt-4 border-t">
-                            <span className="font-semibold text-secondary">{event.price}</span>
-                            <Button size="sm" className="gap-2">
-                              Подробнее
-                              <Icon name="ArrowRight" size={16} />
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+        <div className="container mx-auto max-w-6xl px-4 py-12">
+          <Card className="mb-12 overflow-hidden border-accent/20 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-accent/10 to-secondary/10">
+              <CardTitle className="text-3xl flex items-center gap-3">
+                <Icon name="Info" size={32} className="text-accent" />
+                О туре
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <Icon name="CheckCircle" size={24} className="text-green-600" />
+                    Включено в стоимость
+                  </h3>
+                  <ul className="space-y-2">
+                    {tourDetails.included.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-muted-foreground">
+                        <Icon name="Check" size={18} className="text-green-600 mt-1 flex-shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="places" className="animate-fade-in">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {locations.map((location, idx) => (
-                  <Card key={idx} className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Icon name="MapPin" size={24} className="text-accent" />
-                        {location.name}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground mb-4">{location.address}</p>
-                      <Button className="w-full gap-2">
-                        <Icon name="Navigation" size={18} />
-                        Как добраться
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+                <div>
+                  <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <Icon name="XCircle" size={24} className="text-orange-600" />
+                    Не включено в стоимость
+                  </h3>
+                  <ul className="space-y-2">
+                    {tourDetails.notIncluded.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-muted-foreground">
+                        <Icon name="X" size={18} className="text-orange-600 mt-1 flex-shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </TabsContent>
+            </CardContent>
+          </Card>
 
-            <TabsContent value="contacts" className="animate-fade-in">
-              <Card className="max-w-2xl mx-auto">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Контактная информация</CardTitle>
-                  <CardDescription>Свяжитесь с нами по любым вопросам</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-accent/10 rounded-lg">
-                      <Icon name="Phone" size={24} className="text-accent" />
+          <div className="mb-12">
+            <h2 className="text-4xl font-bold mb-8 text-center" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+              Программа тура
+            </h2>
+            <div className="space-y-6">
+              {tourProgram.map((day) => (
+                <Card key={day.day} className="overflow-hidden hover:shadow-lg transition-shadow animate-fade-in">
+                  <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                        <span className="text-2xl font-bold text-primary">{day.day}</span>
+                      </div>
+                      <div>
+                        <CardTitle className="text-2xl">{day.title}</CardTitle>
+                        <CardDescription className="text-base mt-1">{day.description}</CardDescription>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Телефон</h4>
-                      <p className="text-muted-foreground">+7 (843) 123-45-67</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <div className="space-y-3">
+                      {day.activities.map((activity, idx) => (
+                        <div key={idx} className="flex items-start gap-3">
+                          <Icon name="MapPin" size={18} className="text-accent mt-1 flex-shrink-0" />
+                          <span className="text-muted-foreground">{activity}</span>
+                        </div>
+                      ))}
+                      <div className="pt-4 border-t flex items-center gap-2 text-secondary font-semibold">
+                        <Icon name="Utensils" size={20} />
+                        {day.meals}
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-accent/10 rounded-lg">
-                      <Icon name="Mail" size={24} className="text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Email</h4>
-                      <p className="text-muted-foreground">info@kazan-events.ru</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-accent/10 rounded-lg">
-                      <Icon name="MapPin" size={24} className="text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Адрес</h4>
-                      <p className="text-muted-foreground">г. Казань, ул. Баумана, 58</p>
-                    </div>
-                  </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-accent/10 rounded-lg">
-                      <Icon name="Clock" size={24} className="text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Часы работы</h4>
-                      <p className="text-muted-foreground">Пн-Вс: 9:00 - 21:00</p>
-                    </div>
+          <Card className="overflow-hidden border-accent/20 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-accent to-secondary text-white">
+              <CardTitle className="text-3xl flex items-center gap-3">
+                <Icon name="Send" size={32} />
+                Забронировать тур
+              </CardTitle>
+              <CardDescription className="text-white/90 text-base">
+                Оставьте заявку, и мы свяжемся с вами для подтверждения бронирования
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-base">Ваше имя</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      placeholder="Иван Иванов"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="h-12"
+                    />
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-base">Телефон</Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="+7 (999) 123-45-67"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      className="h-12"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-base">Email</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="ivan@example.com"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="h-12"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="people" className="text-base">Количество человек</Label>
+                    <Input
+                      id="people"
+                      name="people"
+                      type="number"
+                      min="1"
+                      max="10"
+                      value={formData.people}
+                      onChange={handleChange}
+                      required
+                      className="h-12"
+                    />
+                  </div>
+                </div>
+                
+                <div className="bg-accent/10 p-6 rounded-lg">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-lg">Стоимость за человека:</span>
+                    <span className="text-2xl font-bold text-accent">{tourDetails.basePrice.toLocaleString()} ₽</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xl font-bold">
+                    <span>Итого:</span>
+                    <span className="text-3xl text-secondary">
+                      {(tourDetails.basePrice * parseInt(formData.people || '1')).toLocaleString()} ₽
+                    </span>
+                  </div>
+                </div>
+
+                <Button type="submit" size="lg" className="w-full h-14 text-lg gap-2">
+                  <Icon name="Send" size={20} />
+                  Отправить заявку
+                </Button>
+                
+                <p className="text-center text-sm text-muted-foreground">
+                  Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
+                </p>
+              </form>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <Icon name="Phone" size={28} className="text-accent" />
+                Контакты
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-accent/10 rounded-lg">
+                    <Icon name="Phone" size={24} className="text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Телефон</p>
+                    <p className="font-semibold">+7 (843) 123-45-67</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-accent/10 rounded-lg">
+                    <Icon name="Mail" size={24} className="text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Email</p>
+                    <p className="font-semibold">tour@kazan.ru</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-accent/10 rounded-lg">
+                    <Icon name="Clock" size={24} className="text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Режим работы</p>
+                    <p className="font-semibold">Пн-Вс: 9:00-21:00</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
