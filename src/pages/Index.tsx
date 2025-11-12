@@ -73,9 +73,10 @@ const tourProgram: DayProgram[] = [
 
 const tourDetails = {
   duration: '4 дня / 3 ночи',
-  dates: '29 декабря - 1 января',
+  dates: '19-22 декабря',
   groupSize: 'до 20 человек',
-  basePrice: 24900,
+  basePrice: 18600,
+  oldPrice: 24900,
   included: [
     'Проживание в отеле 4* (3 ночи)',
     'Питание по программе',
@@ -145,10 +146,10 @@ export default function Index() {
                 <Icon name="Sparkles" size={24} className="text-secondary" />
               </div>
               <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-fade-in" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                Новогодний тур в Казань
+                Казань Предновогодняя
               </h1>
               <p className="text-xl md:text-2xl text-white/90 max-w-2xl mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                Встретьте Новый год в столице Татарстана
+                Погрузитесь в волшебство предновогодней Казани! Ощутите дух праздника на заснеженных улицах древнего города, где восточная сказка встречается с русскими традициями.
               </p>
               <div className="flex flex-wrap gap-4 text-lg">
                 <Badge variant="secondary" className="px-4 py-2 text-base">
@@ -159,10 +160,16 @@ export default function Index() {
                   <Icon name="Users" size={18} className="mr-2" />
                   {tourDetails.groupSize}
                 </Badge>
-                <Badge variant="secondary" className="px-4 py-2 text-base">
-                  <Icon name="Tag" size={18} className="mr-2" />
-                  от {tourDetails.basePrice.toLocaleString()} ₽
-                </Badge>
+                <div className="relative inline-block">
+                  <Badge variant="secondary" className="px-4 py-2 text-base relative">
+                    <Icon name="Tag" size={18} className="mr-2" />
+                    <span className="line-through opacity-60 mr-2">{tourDetails.oldPrice.toLocaleString()} ₽</span>
+                    <span className="text-xl font-bold text-green-600">{tourDetails.basePrice.toLocaleString()} ₽</span>
+                  </Badge>
+                  <Badge className="absolute -top-3 -right-3 bg-red-500 text-white animate-pulse">
+                    Спеццена!
+                  </Badge>
+                </div>
               </div>
             </div>
           </div>
